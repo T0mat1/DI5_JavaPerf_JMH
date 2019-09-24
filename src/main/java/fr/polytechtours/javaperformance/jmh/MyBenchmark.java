@@ -33,10 +33,13 @@ package fr.polytechtours.javaperformance.jmh;
 
 import org.openjdk.jmh.annotations.Benchmark;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MyBenchmark {
 
     @Benchmark
-    public void testMethod() {
+    public static List<Integer> timesTwoForEach(List<Integer> myList) {
 
         String st1 = "azerty";
         String st2 = "azerty";
@@ -54,10 +57,23 @@ public class MyBenchmark {
         String st14 = "azerty";
         String st15 = "azerty";
 
+        List<Integer> listMultipliedByTwo = new ArrayList<>();
+
+        return listMultipliedByTwo;
+
 
 
         // This is a demo/sample template for building your JMH benchmarks. Edit as needed.
         // Put your benchmark code here.
+    }
+
+    @Benchmark
+    public static List<Integer> timesTwoStream(List<Integer> myList) {
+        return null;
+    }
+
+    private Integer timesTwo(Integer n) {
+        return n*2;
     }
 
 }
