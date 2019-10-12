@@ -31,49 +31,62 @@
 
 package fr.polytechtours.javaperformance.jmh;
 
-import org.openjdk.jmh.annotations.Benchmark;
+import fr.polytechtours.javaperformance.jmh.utils.BenchmarkHelper;
+import org.openjdk.jmh.annotations.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
+@Fork(value = 1)
+@BenchmarkMode(Mode.AverageTime)
+@Warmup(iterations = 0)
+@Measurement(iterations = 5, timeUnit = TimeUnit.MILLISECONDS)
+@State(Scope.Benchmark)
 public class MyBenchmark {
 
+    @Param({"100000"})
+    private int N;
+
+    public List<Integer> myList;
+
+    private List<Integer> initialize() {
+        List<Integer> data = new ArrayList<>();
+        for(int i = 0; i < N; i++) {
+            Random r = new Random();
+            data.add(r.nextInt(1_000_000));
+        }
+
+        return data;
+    }
+
+    @Setup
+    public void setup() {
+        myList = initialize();
+    }
+
+
     @Benchmark
-    public static List<Integer> timesTwoForEach(List<Integer> myList) {
+    public List<Integer> timesTwoForEach() {
 
-        String st1 = "azerty";
-        String st2 = "azerty";
-        String st3 = "azerty";
-        String st4 = "azerty";
-        String st5 = "azerty";
-        String st6 = "azerty";
-        String st7 = "azerty";
-        String st8 = "azerty";
-        String st9 = "azerty";
-        String st10 = "azerty";
-        String st11 = "azerty";
-        String st12 = "azerty";
-        String st13 = "azerty";
-        String st14 = "azerty";
-        String st15 = "azerty";
+        List<Integer> list = new ArrayList<>();
+        for (Integer i : myList) {
+            list.add(BenchmarkHelper.timesTwo(i));
+        }
 
-        List<Integer> listMultipliedByTwo = new ArrayList<>();
+        return list;
 
-        return listMultipliedByTwo;
-
-
-
-        // This is a demo/sample template for building your JMH benchmarks. Edit as needed.
-        // Put your benchmark code here.
     }
 
     @Benchmark
-    public static List<Integer> timesTwoStream(List<Integer> myList) {
-        return null;
-    }
+    public List<Integer> timesTwoStream() {
 
-    private Integer timesTwo(Integer n) {
-        return n*2;
+        List<Integer> list = new ArrayList<>();
+        myList.stream().forEach(i -> list.add(BenchmarkHelper.timesTwo(i)));
+
+        return list;
+
     }
 
 }

@@ -18,17 +18,20 @@ class MyBenchmarkTest {
     private static final Integer[] EXPECTED_RESULT = {24, 84, 36, 256, 72, 26, 8, 16};
 
     private List<Integer> myList;
+    private MyBenchmark myBenchmark;
 
      @Before
      void setup() {
         myList = new ArrayList<>();
         myList = Arrays.asList(MY_ARRAY);
+        myBenchmark = new MyBenchmark();
+        myBenchmark.setup();
      }
 
     @Test
     void testMyMethodOK() {
-        Assert.assertTrue(asCorrectValues(MyBenchmark.timesTwoForEach(myList)));
-        Assert.assertTrue(asCorrectValues(MyBenchmark.timesTwoStream(myList)));
+        Assert.assertTrue(asCorrectValues(myBenchmark.timesTwoForEach()));
+        Assert.assertTrue(asCorrectValues(myBenchmark.timesTwoStream()));
     }
 
     private boolean asCorrectValues(List<Integer> list) {
