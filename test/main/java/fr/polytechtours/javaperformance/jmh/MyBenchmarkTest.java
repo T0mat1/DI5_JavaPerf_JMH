@@ -12,7 +12,7 @@ import fr.polytechtours.javaperformance.jmh.MyBenchmark;
 
 import static org.junit.Assert.*;
 
-class MyBenchmarkTest {
+public class MyBenchmarkTest {
 
     private Integer[] MY_ARRAY = {12, 42, 18, 128, 36, 13, 4, 8};
     private static final Integer[] EXPECTED_RESULT = {24, 84, 36, 256, 72, 26, 8, 16};
@@ -21,17 +21,18 @@ class MyBenchmarkTest {
     private MyBenchmark myBenchmark;
 
      @Before
-     void setup() {
+     public void setup() {
         myList = new ArrayList<>();
         myList = Arrays.asList(MY_ARRAY);
         myBenchmark = new MyBenchmark();
-        myBenchmark.setup();
+        myBenchmark.setMyList(myList);
      }
 
     @Test
-    void testMyMethodOK() {
+    public void testMyMethodOK() {
         Assert.assertTrue(asCorrectValues(myBenchmark.timesTwoForEach()));
         Assert.assertTrue(asCorrectValues(myBenchmark.timesTwoStream()));
+        Assert.assertTrue(asCorrectValues(myBenchmark.timesTwoForLoop()));
     }
 
     private boolean asCorrectValues(List<Integer> list) {

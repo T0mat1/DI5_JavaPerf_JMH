@@ -40,16 +40,16 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @Fork(value = 1)
-@BenchmarkMode(Mode.AverageTime)
-@Warmup(iterations = 0)
-@Measurement(iterations = 5, timeUnit = TimeUnit.MILLISECONDS)
+@BenchmarkMode(Mode.Throughput)
+@Warmup(iterations = 1)
+@Measurement(iterations = 20, timeUnit = TimeUnit.NANOSECONDS)
 @State(Scope.Benchmark)
 public class MyBenchmark {
 
-    @Param({"100000"})
+    @Param({"10000000"})
     private int N;
 
-    public List<Integer> myList;
+    private List<Integer> myList;
 
     private List<Integer> initialize() {
         List<Integer> data = new ArrayList<>();
@@ -87,6 +87,23 @@ public class MyBenchmark {
 
         return list;
 
+    }
+
+    @Benchmark
+    public List<Integer> timesTwoForLoop() {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0, size = myList.size(); i < size ; i++) {
+            list.add(BenchmarkHelper.timesTwo(myList.get(i)));
+        }
+        return list;
+    }
+
+    public List<Integer> getMyList() {
+        return myList;
+    }
+
+    public void setMyList(List<Integer> myList) {
+        this.myList = myList;
     }
 
 }
